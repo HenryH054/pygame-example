@@ -12,8 +12,11 @@ jump_time = 0
 game_width = screen.get_width() / 2
 game_height = screen.get_height() / 2
 player_pos = pygame.Vector2(game_width // 2, game_height)
+coord = game_width * 2
 
 while running:
+    rectangle = pygame.Rect(coord, 400, 100, 400)
+    rectangle2 = pygame.Rect(coord, 0, 100, 100)
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
@@ -26,6 +29,17 @@ while running:
     screen.fill("gray")
 
     pygame.draw.circle(screen, "red", player_pos, 40)
+
+    pygame.draw.rect(screen, "green", rectangle)
+    pygame.draw.rect(screen, "green", rectangle2)
+    coord -= 500 * dt
+
+    if coord <= 0:
+        coord = game_width * 2
+
+    if rectangle.colliderect(pygame.Rect(player_pos.x, player_pos.y, 40, 40)) or \
+            rectangle2.colliderect(pygame.Rect(player_pos.x, player_pos.y, 40, 40)):
+        pygame.quit()
 
     # gives smooth movement when player decides to jump
     if jumped:
